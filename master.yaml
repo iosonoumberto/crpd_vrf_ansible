@@ -1,0 +1,6 @@
+---
+- include: docker_network.yaml
+- include: pre_snap_vrf.yaml
+- include: crpd_vrf.yaml
+- include: iptables.yaml
+- include: containers.yaml

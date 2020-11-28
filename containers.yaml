@@ -1,0 +1,18 @@
+---
+- name: test
+  hosts: servers
+  gather_facts: no
+  tasks:
+    - name: data container
+      docker_container:
+        name: "{{ item.name }}"
+        image: "{{ item.image }}"
+        detach: true
+        interactive: true
+        tty: true
+        force_kill: true
+        purge_networks: true
+        auto_remove: "yes"
+        networks:
+          - name: "{{ vpn_name }}"
+      with_items: "{{ containers[inventory_hostname] }}"

@@ -1,0 +1,3 @@
+phy_ifs:
+  - ens3f1
+  - ens3f2

@@ -1,0 +1,25 @@
+---
+- name: test
+  hosts: crpds
+  connection: local
+  gather_facts: no
+  roles:
+    - Juniper.junos
+  tasks:
+    - name: Building eonfiguration
+      template:
+        src: vrf.j2
+        dest: "{{ inventory_hostname }}.conf"
+    - name: Load configuration
+      juniper_junos_config:
+        host: "{{ inventory_hostname }}"
+        port: "{{ nc_port }}"
+        user: "{{ nc_user }}"
+        passwd: "{{ nc_psswd }}"
+        load: 'set'
+        format: 'set'
+        file: "{{ inventory_hostname }}.conf"
+    - name: Remove configuration file
+      file:
+        path: "{{ inventory_hostname }}.conf"
+        state: absent

@@ -1,0 +1,7 @@
+---
+- name: test
+  hosts: servers
+  gather_facts: no
+  tasks:
+    - name: snap pre-conf vrfs
+      shell: ip vrf | grep vrf | cut -d " " -f 1 > /tmp/pre

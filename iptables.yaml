@@ -1,0 +1,31 @@
+---
+- name: test
+  hosts: servers
+  gather_facts: no
+  tasks:
+    - name: snap post-conf vrfs
+      shell: ip vrf | grep vrf | cut -d " " -f 1 > /tmp/post
+    - name: get new vrf interface
+      shell: diff /tmp/pre /tmp/post | grep crpd | cut -d " " -f 2
+      register: outp
+    - name: save new vrf interface name into a variable
+      set_fact:
+        vrf: "{{ outp.stdout }}"
+    - debug:
+        var: vrf
+    - name: add iptables rule to forward traffic outside the server (1/2)
+      iptables:
+        chain: FORWARD
+        in_interface: "{{ vrf }}"
+        out_interface: "{{ item }}"
+        action: insert
+        jump: ACCEPT
+      with_items: "{{ phy_ifs }}"
+    - name: add iptables rule to forward traffic outside the server (2/2)
+      iptables:
+        chain: FORWARD
+        out_interface: "{{ vrf }}"
+        in_interface: "{{ item }}"
+        action: insert
+        jump: ACCEPT
+      with_items: "{{ phy_ifs }}"

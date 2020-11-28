@@ -1,0 +1,9 @@
+[all:children]
+servers
+crpds
+
+[servers]
+rouver1
+
+[crpds]
+crpd1
