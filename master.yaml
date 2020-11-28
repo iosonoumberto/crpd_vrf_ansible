@@ -1,6 +1,12 @@
 ---
 - include: docker_network.yaml
+  when: do == "create"
+- include: containers.yaml
+  when: do == "delete"
 - include: pre_snap_vrf.yaml
 - include: crpd_vrf.yaml
 - include: iptables.yaml
 - include: containers.yaml
+  when: do == "create"
+- include: docker_network.yaml
+  when: do == "delete"

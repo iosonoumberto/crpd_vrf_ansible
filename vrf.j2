@@ -1,5 +1,9 @@
+{% if do == "create" -%}
 set routing-instances {{ vpn_name }} instance-type vrf
 set routing-instances {{ vpn_name }} interface {{ vpn_name }}
 set routing-instances {{ vpn_name }} route-distinguisher {{ lo0 }}:{{ rdidx }}
 set routing-instances {{ vpn_name }} vrf-target {{ rt }}
 set routing-instances {{ vpn_name }} vrf-table-label
+{% else -%}
+delete routing-instances {{ vpn_name }}
+{% endif -%}

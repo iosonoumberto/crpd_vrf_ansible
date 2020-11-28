@@ -1,7 +1,11 @@
 ---
-- name: test
+- name: Insert/Delete iptables rules
   hosts: servers
   gather_facts: no
+  vars:
+    action:
+      create: "present"
+      delete: "absent"
   tasks:
     - name: snap post-conf vrfs
       shell: ip vrf | grep vrf | cut -d " " -f 1 > /tmp/post
@@ -13,19 +17,21 @@
         vrf: "{{ outp.stdout }}"
     - debug:
         var: vrf
-    - name: add iptables rule to forward traffic outside the server (1/2)
+    - name: insert/delete iptables rule to forward traffic outside the server (1/2)
       iptables:
         chain: FORWARD
         in_interface: "{{ vrf }}"
         out_interface: "{{ item }}"
         action: insert
         jump: ACCEPT
+        state: "{{ action[do] }}"
       with_items: "{{ phy_ifs }}"
-    - name: add iptables rule to forward traffic outside the server (2/2)
+    - name: insert/delete iptables rule to forward traffic outside the server (2/2)
       iptables:
         chain: FORWARD
         out_interface: "{{ vrf }}"
         in_interface: "{{ item }}"
         action: insert
         jump: ACCEPT
+        state: "{{ action[do] }}"
       with_items: "{{ phy_ifs }}"

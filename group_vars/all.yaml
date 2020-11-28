@@ -1,3 +1,4 @@
+do: "delete"
 vpn_name: "pippo"
 nc_port: 8022
 nc_user: root

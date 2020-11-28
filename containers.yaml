@@ -1,18 +1,21 @@
 ---
-- name: test
+- name: Create/Delete containers
   hosts: servers
   gather_facts: no
+  vars:
+    action:
+      create: "started"
+      delete: "absent"
   tasks:
-    - name: data container
+    - name: Actin on container
       docker_container:
         name: "{{ item.name }}"
         image: "{{ item.image }}"
         detach: true
         interactive: true
         tty: true
-        force_kill: true
         purge_networks: true
-        auto_remove: "yes"
+        state: "{{ action[do] }}"
         networks:
           - name: "{{ vpn_name }}"
       with_items: "{{ containers[inventory_hostname] }}"

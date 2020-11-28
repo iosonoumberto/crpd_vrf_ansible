@@ -1,5 +1,5 @@
 ---
-- name: test
+- name: Check configured vrfs
   hosts: servers
   gather_facts: no
   tasks:

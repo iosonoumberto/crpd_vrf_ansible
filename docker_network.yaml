@@ -1,11 +1,16 @@
 ---
-- name: test
+- name: "Create/Delete docker network"
   hosts: servers
   gather_facts: no
+  vars:
+    action:
+      create: "present"
+      delete: "absent"
   tasks:
-    - name: Create a network with options
+    - name: Acting on network
       docker_network:
         name: "{{ vpn_name }}"
+        state: "{{ action[do] }}"
         driver_options:
           com.docker.network.bridge.name: "{{ vpn_name}}"
           com.docker.network.bridge.enable_ip_masquerade: "false"

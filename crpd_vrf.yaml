@@ -1,5 +1,5 @@
 ---
-- name: test
+- name: Set/Delete Junos configuration from crpd
   hosts: crpds
   connection: local
   gather_facts: no

@@ -1,0 +1,7 @@
+---
+- name: test
+  hosts: all
+  gather_facts: no
+  tasks:
+    - debug:
+        var: "{{ inventory_hostname }}"
