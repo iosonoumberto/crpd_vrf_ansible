@@ -21,6 +21,10 @@
     - debug:
         var: vrf
       when: containers[inventory_hostname] is defined
+    - name: WARNING, NO IPTABLES RULES TO ACT
+      debug:
+        msg: NO VRF CHANGES DETECTED. TASK CREATING RULES WILL BE SKIPPED
+      when: vrf == ""
     - name: insert/delete iptables rule to forward traffic outside the server (1/2)
       iptables:
         chain: FORWARD
@@ -30,7 +34,9 @@
         jump: ACCEPT
         state: "{{ action[do] }}"
       with_items: "{{ phy_ifs }}"
-      when: containers[inventory_hostname] is defined
+      when:
+        - containers[inventory_hostname] is defined
+        - vrf != ""
     - name: insert/delete iptables rule to forward traffic outside the server (2/2)
       iptables:
         chain: FORWARD
@@ -40,4 +46,6 @@
         jump: ACCEPT
         state: "{{ action[do] }}"
       with_items: "{{ phy_ifs }}"
-      when: containers[inventory_hostname] is defined
+      when:
+        - containers[inventory_hostname] is defined
+        - vrf != ""
