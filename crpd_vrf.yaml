@@ -21,6 +21,14 @@
         format: 'set'
         file: "{{ inventory_hostname }}.conf"
       when: containers[physer] is defined
+      register: result
+      failed_when:
+        - '"Failure" in result.msg'
+        - '"statement not found" not in result.msg'
+    - name: WARNING IN CASE VRF WAS NOT FOUND!!!
+      debug:
+        msg: VRF WAS NOT FOUND!!!
+      when: '"statement not found" in result.msg'
     - name: Remove configuration file
       file:
         path: "{{ inventory_hostname }}.conf"

@@ -1,6 +1,6 @@
 do: "delete"
 vpn_name: "pippo"
-nc_port: 8022
+nc_port: "8022"
 nc_user: root
 nc_psswd: Juniper
 rt: "target:65000:101"
