@@ -16,3 +16,4 @@
           com.docker.network.bridge.enable_ip_masquerade: "false"
         ipam_options:
           subnet: "{{ subnets[inventory_hostname] }}"
+      when: containers[inventory_hostname] is defined

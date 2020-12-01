@@ -5,3 +5,4 @@
   tasks:
     - name: snap pre-conf vrfs
       shell: ip vrf | grep vrf | cut -d " " -f 1 > /tmp/pre
+      when: containers[inventory_hostname] is defined

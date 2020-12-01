@@ -9,14 +9,18 @@
   tasks:
     - name: snap post-conf vrfs
       shell: ip vrf | grep vrf | cut -d " " -f 1 > /tmp/post
+      when: containers[inventory_hostname] is defined
     - name: get new vrf interface
       shell: diff /tmp/pre /tmp/post | grep crpd | cut -d " " -f 2
       register: outp
+      when: containers[inventory_hostname] is defined
     - name: save new vrf interface name into a variable
       set_fact:
         vrf: "{{ outp.stdout }}"
+      when: containers[inventory_hostname] is defined
     - debug:
         var: vrf
+      when: containers[inventory_hostname] is defined
     - name: insert/delete iptables rule to forward traffic outside the server (1/2)
       iptables:
         chain: FORWARD
@@ -26,6 +30,7 @@
         jump: ACCEPT
         state: "{{ action[do] }}"
       with_items: "{{ phy_ifs }}"
+      when: containers[inventory_hostname] is defined
     - name: insert/delete iptables rule to forward traffic outside the server (2/2)
       iptables:
         chain: FORWARD
@@ -35,3 +40,4 @@
         jump: ACCEPT
         state: "{{ action[do] }}"
       with_items: "{{ phy_ifs }}"
+      when: containers[inventory_hostname] is defined

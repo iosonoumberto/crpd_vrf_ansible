@@ -7,9 +7,13 @@ rt: "target:65000:101"
 rdidx: "7"
 subnets:
     rouver1: "192.168.59.0/25"
+    rouver2: "192.168.39.0/24"
 containers:
     rouver1:
       - image: nginx
         name: ws
       - image: alpine
         name: alps
+    rouver2:
+      - name: web
+        image: httpd

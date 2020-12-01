@@ -19,3 +19,4 @@
         networks:
           - name: "{{ vpn_name }}"
       with_items: "{{ containers[inventory_hostname] }}"
+      when: containers[inventory_hostname] is defined

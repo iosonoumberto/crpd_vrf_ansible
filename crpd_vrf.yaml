@@ -10,6 +10,7 @@
       template:
         src: vrf.j2
         dest: "{{ inventory_hostname }}.conf"
+      when: containers[physer] is defined
     - name: Load configuration
       juniper_junos_config:
         host: "{{ inventory_hostname }}"
@@ -19,7 +20,9 @@
         load: 'set'
         format: 'set'
         file: "{{ inventory_hostname }}.conf"
+      when: containers[physer] is defined
     - name: Remove configuration file
       file:
         path: "{{ inventory_hostname }}.conf"
         state: absent
+      when: containers[physer] is defined
